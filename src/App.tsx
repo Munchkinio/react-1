@@ -3,10 +3,19 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
-import Counter from './Counter'
+import Counter from './components/Counter/Counter'
+import SearchForm from './components/SearchForm/SearchForm'
+import GenreSelect from './components/GenreSelect/GenreSelect'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const handleSearch = (query: string) => console.log('User searched for: ', query);
+  const genres = ['all', 'documentary', 'comedy', 'horror', 'crime'];
+  const [selectedGenre, setSelectedGenre] = useState(genres[0]);
+  const handleGenre = (genre: string) => {
+    setSelectedGenre(genre);
+    console.log('User selected: ', genre, ' genre');
+  };
 
   return (
     <>
@@ -32,6 +41,9 @@ function App() {
       </section>
 
       <Counter count={0}/>
+
+      <SearchForm searchQuery="Find your best movie" onSearch={handleSearch} />
+      <GenreSelect genres={genres} selectedGenre={selectedGenre} onSelect={handleGenre} />
 
       <div className="ticks"></div>
 
