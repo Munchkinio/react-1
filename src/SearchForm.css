@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;700&display=swap');
+
+.search-form {
+  position: relative;
+  min-height: 650px;
+  overflow: hidden;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  text-align: left;
+  margin: 20px 0 0;
+}
+
+.search-form__posters {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  transform: scale(1.1);
+  filter: blur(2px);
+}
+
+.search-form__poster {
+  background-size: cover;
+  background-position: center;
+}
+
+.search-form__overlay {
+  position: relative;
+  z-index: 1;
+  min-height: 650px;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 60px 100px;
+  box-sizing: border-box;
+  background: rgba(35, 35, 35, 0.7);
+}
+
+.search-form__header {
+  display: flex;
+  align-items: center;
+}
+
+.search-form__logo {
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.search-form__logo-netflix {
+  color: #f65261;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.search-form__logo-roulette {
+  color: #f65261;
+  font-weight: 300;
+  text-transform: lowercase;
+}
+
+.search-form__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  padding-top: 40px;
+}
+
+.search-form__title {
+  margin: 0;
+  font-size: 60px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #fff;
+}
+
+.search-form__form {
+  display: flex;
+  width: 100%;
+  max-width: 950px;
+}
+
+.search-form__input {
+  flex: 1;
+  min-width: 0;
+  height: 55px;
+  padding: 0 20px;
+  border: none;
+  background: rgba(35, 35, 35, 0.5);
+  color: #fff;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 300;
+  outline: none;
+}
+
+.search-form__input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.search-form__submit {
+  width: 183px;
+  height: 55px;
+  border: none;
+  background: #f65261;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-form__submit:hover {
+  background: #e04d5a;
+}
+
+@media (max-width: 768px) {
+  .search-form__overlay {
+    padding: 24px 20px 60px;
+  }
+
+  .search-form__title {
+    font-size: 32px;
+    letter-spacing: 2px;
+  }
+
+  .search-form__form {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-form__submit {
+    width: 100%;
+  }
+}
