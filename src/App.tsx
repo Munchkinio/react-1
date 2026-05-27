@@ -6,20 +6,16 @@ import './App.css'
 import Counter from './Counter'
 import SearchForm from './SearchForm'
 import GenreSelect from './GenreSelect'
-import type { Genre } from './types';
 
 function App() {
   const [count, setCount] = useState(0);
   const handleSearch = (query: string) => console.log('User searched for: ', query);
-  const handleGenre = (genre: Genre) => {setActiveGenre(genre); console.log('User selected: ', genre.name, ' genre');}
-  const genres: Genre[] = [
-    { id: 1, name: 'all' },
-    { id: 2, name: 'documentary' },
-    { id: 3, name: 'comedy' },
-    { id: 4, name: 'horror' },
-    { id: 5, name: 'crime' },
-  ];
-  const [activeGenre, setActiveGenre] = useState<Genre>(genres[0]);
+  const genres = ['all', 'documentary', 'comedy', 'horror', 'crime'];
+  const [selectedGenre, setSelectedGenre] = useState(genres[0]);
+  const handleGenre = (genre: string) => {
+    setSelectedGenre(genre);
+    console.log('User selected: ', genre, ' genre');
+  };
 
   return (
     <>
@@ -47,7 +43,7 @@ function App() {
       <Counter count={0}/>
 
       <SearchForm searchQuery="Find your best movie" onSearch={handleSearch} />
-      <GenreSelect genres={genres} activeGenre={activeGenre} onSelect={handleGenre} />
+      <GenreSelect genres={genres} selectedGenre={selectedGenre} onSelect={handleGenre} />
 
       <div className="ticks"></div>
 

@@ -1,24 +1,23 @@
-import type { Genre } from './types'
 import './GenreSelect.css'
 
-type GenreProps = {
-  genres: Genre[]
-  activeGenre: Genre
-  onSelect: (genre: Genre) => void
+type GenreSelectProps = {
+  genres: string[]
+  selectedGenre: string
+  onSelect: (genre: string) => void
 }
 
-function GenreSelect({ genres, activeGenre, onSelect }: GenreProps) {
+function GenreSelect({ genres, selectedGenre, onSelect }: GenreSelectProps) {
   return (
     <nav className="genre-select">
       <ul className="genre-select__list">
         {genres.map((genre) => (
-          <li key={genre.id} className="genre-select__item">
+          <li key={genre} className="genre-select__item">
             <button
               type="button"
-              className={`genre-select__btn${genre.id === activeGenre.id ? ' genre-select__btn--active' : ''}`}
+              className={`genre-select__btn${genre === selectedGenre ? ' genre-select__btn--active' : ''}`}
               onClick={() => onSelect(genre)}
             >
-              {genre.name}
+              {genre}
             </button>
           </li>
         ))}
