@@ -3,9 +3,9 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
-import Counter from './Counter'
-import SearchForm from './SearchForm'
-import GenreSelect from './GenreSelect'
+import Counter from './components/Counter/Counter'
+import SearchForm from './components/SearchForm/SearchForm'
+import GenreSelect from './components/GenreSelect/GenreSelect'
 
 function App() {
   const [count, setCount] = useState(0);
