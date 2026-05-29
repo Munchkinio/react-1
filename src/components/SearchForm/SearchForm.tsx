@@ -35,6 +35,10 @@ function SearchForm({ searchQuery, onSearch }: SearchProps) {
     onSearch(query)
   }
 
+  const handleClear = () => {
+    setQuery('')
+  }
+
   return (
     <section className="search-form">
       <div className="search-form__posters" aria-hidden="true">
@@ -59,13 +63,25 @@ function SearchForm({ searchQuery, onSearch }: SearchProps) {
           <h1 className="search-form__title">FIND YOUR MOVIE</h1>
 
           <form className="search-form__form" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              className="search-form__input"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="What do you want to watch?"
-            />
+            <div className="search-form__input-wrapper">
+              <input
+                type="text"
+                className="search-form__input"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="What do you want to watch?"
+              />
+              {query.length > 0 && (
+                <button
+                  type="button"
+                  className="search-form__clear"
+                  onClick={handleClear}
+                  aria-label="Clear search"
+                >
+                  ×
+                </button>
+              )}
+            </div>
             <button type="submit" className="search-form__submit">
               SEARCH
             </button>

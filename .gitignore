@@ -16,6 +16,7 @@ dist-ssr
 cypress/screenshots
 cypress/videos
 cypress/downloads
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*
