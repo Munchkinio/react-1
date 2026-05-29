@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+.movie-tile {
+  max-width: 320px;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+}
+
+.movie-tile__poster-wrap {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.movie-tile__poster {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.movie-tile__menu {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--palette-gray-dark);
+  color: var(--palette-white);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.movie-tile__menu:hover {
+  background: var(--palette-gray-darker);
+}
+
+.movie-tile__menu-popup {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  min-width: 120px;
+  padding-top: 28px;
+  border: 1px solid var(--palette-gray-dark);
+  border-radius: 4px;
+  background: var(--palette-gray-darker);
+}
+
+.movie-tile__menu-close {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  padding: 3px;
+  border: none;
+  background: none;
+  color: var(--palette-white);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.movie-tile__menu-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.movie-tile__menu-list li {
+  padding: 10px 16px;
+  color: var(--palette-white);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.movie-tile__menu-list li:hover {
+  background: var(--palette-accent);
+}
+
+.movie-tile__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.movie-tile__title {
+  margin: 0;
+  color: var(--palette-white);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.3;
+  text-transform: capitalize;
+}
+
+.movie-tile__year {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border: 1px solid var(--palette-gray-medium);
+  border-radius: 4px;
+  color: var(--palette-white);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.movie-tile__genres {
+  margin: 0;
+  color: var(--palette-white);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.4;
+}
