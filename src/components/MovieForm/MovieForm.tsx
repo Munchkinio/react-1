@@ -16,8 +16,12 @@ function formatDateForInput(date?: Date): string {
   return `${year}-${month}-${day}`
 }
 
-function MovieForm({ movie, onFormSubmit }: MovieFormProps) {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+function parseDateFromInput(value: string): Date {
+  const [year, month, day] = value.split('-').map(Number)
+  return new Date(year, month - 1, day)
+}
+
+function MovieForm({ movie, onFormSubmit }: MovieFormProps) {  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
@@ -27,8 +31,7 @@ function MovieForm({ movie, onFormSubmit }: MovieFormProps) {
       movieId: movie?.movieId ?? Date.now(),
       movieTitle: String(rawData.movieTitle),
       movieCover: String(rawData.movieCover),
-      movieReleaseDate: new Date(String(rawData.movieReleaseDate)),
-      movieRelevantGenre: String(rawData.movieRelevantGenre)
+      movieReleaseDate: parseDateFromInput(String(rawData.movieReleaseDate)),      movieRelevantGenre: String(rawData.movieRelevantGenre)
         .split(',')
         .map((genre) => genre.trim())
         .filter(Boolean),

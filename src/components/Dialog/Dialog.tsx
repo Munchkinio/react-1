@@ -1,6 +1,5 @@
-import type { ReactNode } from 'react'
+import { useId, type ReactNode } from 'react'
 import './Dialog.css'
-
 type DialogProps = {
   title: ReactNode
   children: ReactNode
@@ -9,7 +8,7 @@ type DialogProps = {
 }
 
 function Dialog({ title, children, onClose, size = 'default' }: DialogProps) {
-  const titleId = 'dialog-title'
+  const titleId = useId()
   const dialogClassName = size === 'compact' ? 'dialog dialog--compact' : 'dialog'
 
   return (

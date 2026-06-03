@@ -44,4 +44,15 @@ describe("SearchForm", () => {
     expect(screen.getByRole('textbox')).toHaveValue('');
     expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
   });
+
+  test("user clicks add movie button", async () => {
+    const user = userEvent.setup();
+    const onAddMovieMock = jest.fn();
+
+    render(
+      <SearchForm searchQuery="Find your best movie" onSearch={jest.fn()} onAddMovie={onAddMovieMock} />
+    );
+    await user.click(screen.getByRole('button', { name: '+ Add movie' }));
+    expect(onAddMovieMock).toHaveBeenCalledTimes(1);
+  });
 });
