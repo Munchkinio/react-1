@@ -1,8 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
-
 .movie-tile {
   max-width: 320px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: Montserrat, sans-serif;
   cursor: pointer;
 }
 

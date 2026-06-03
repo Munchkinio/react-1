@@ -8,9 +8,9 @@ const mockMovie: MovieProps = {
   movieId: 1,
   movieTitle: 'Bohemian Rhapsody',
   movieCover: 'https://upload.wikimedia.org/wikipedia/en/2/2e/Bohemian_Rhapsody_poster.png',
-  movieReleaseDate: new Date('2018'),
+  movieReleaseDate: new Date(2018, 0, 1),
   movieRelevantGenre: ['Drama', 'Biography', 'Music'],
-  movieRairing: 8.9,
+  movieRating: 8.9,
   movieDuration: 134,
   movieDescription:
     'Bohemian Rhapsody is a foot-stomping celebration of Queen, their music and their extraordinary lead singer Freddie Mercury.',

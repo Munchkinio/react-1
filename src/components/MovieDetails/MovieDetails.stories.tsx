@@ -8,9 +8,9 @@ const mockMovie: MovieProps = {
   movieId: 1,
   movieTitle: 'Pulp Fiction',
   movieCover: 'https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg',
-  movieReleaseDate: new Date('1994'),
+  movieReleaseDate: new Date(1994, 0, 1),
   movieRelevantGenre: ['Action & Adventure'],
-  movieRairing: 8.9,
+  movieRating: 8.9,
   movieDuration: 154,
   movieDescription:
     'Jules Winnfield (Samuel L. Jackson) and Vincent Vega (John Travolta) are two hit men who are out to retrieve a suitcase stolen from their employer, mob boss Marsellus Wallace (Ving Rhames). Wallace has also asked Vincent to take his wife Mia (Uma Thurman) out a few days later when Wallace himself will be out of town. Butch Coolidge (Bruce Willis) is an aging boxer who is paid by Wallace to lose his fight. The lives of these seemingly unrelated people are woven together.',

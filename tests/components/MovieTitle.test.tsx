@@ -7,9 +7,9 @@ const mockMovie: MovieProps = {
   movieId: 1,
   movieTitle: 'Bohemian Rhapsody',
   movieCover: 'poster.jpg',
-  movieReleaseDate: new Date('2018'),
+  movieReleaseDate: new Date(2018, 0, 1),
   movieRelevantGenre: ['Drama', 'Biography', 'Music'],
-  movieRairing: 8.9,
+  movieRating: 8.9,
   movieDuration: 134,
   movieDescription: 'Bohemian Rhapsody description',
 }
@@ -39,5 +39,17 @@ describe('MovieTitle', () => {
     expect(screen.getByText('Delete')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Close movie menu' })).toBeInTheDocument()
     expect(onMovieClick).not.toHaveBeenCalled()
+  })
+
+  test('calls onMovieClick when tile is clicked', async () => {
+    const user = userEvent.setup()
+    const onMovieClick = jest.fn()
+
+    render(<MovieTitle movie={mockMovie} onMovieClick={onMovieClick} />)
+
+    await user.click(screen.getByRole('heading', { name: 'Bohemian Rhapsody' }))
+
+    expect(onMovieClick).toHaveBeenCalledTimes(1)
+    expect(onMovieClick).toHaveBeenCalledWith(mockMovie.movieId)
   })
 })

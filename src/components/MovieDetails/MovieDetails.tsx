@@ -49,7 +49,7 @@ function MovieDetails({ movie, onSearchClick }: MovieDetailsProps) {
         <div className="movie-details__info">
           <div className="movie-details__title-row">
             <h1 className="movie-details__title">{movie.movieTitle}</h1>
-            <span className="movie-details__rating">{movie.movieRairing}</span>
+            <span className="movie-details__rating">{movie.movieRating}</span>
           </div>
 
           <p className="movie-details__genres">

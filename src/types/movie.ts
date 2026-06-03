@@ -4,7 +4,7 @@ export type MovieProps = {
   movieCover: string,
   movieReleaseDate: Date,
   movieRelevantGenre: string[],
-  movieRairing: number,
+  movieRating: number,
   movieDuration: number,
   movieDescription: string
 }

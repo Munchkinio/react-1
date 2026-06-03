@@ -12,9 +12,21 @@ function MovieTitle({
   onMovieClick,
 }: MovieTitle) {
   const [isPopupOpen, togglePopup] = useState(false)
+  const handleOpenMovie = () => onMovieClick(movie.movieId)
 
   return (
-    <article className="movie-tile" onClick={() => onMovieClick(movie.movieId)}>
+    <article
+      className="movie-tile"
+      role="button"
+      tabIndex={0}
+      onClick={handleOpenMovie}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          handleOpenMovie()
+        }
+      }}
+    >
       <div className="movie-tile__poster-wrap">
         <button
           type="button"

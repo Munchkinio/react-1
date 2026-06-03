@@ -1,8 +1,8 @@
-import React from 'react';
+import type { ButtonHTMLAttributes } from 'react';
 
 import './button.css';
 
-export interface ButtonProps {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Is this the principal call to action on the page? */
   primary?: boolean;
   /** What background color to use */
@@ -11,8 +11,6 @@ export interface ButtonProps {
   size?: 'small' | 'medium' | 'large';
   /** Button contents */
   label: string;
-  /** Optional click handler */
-  onClick?: () => void;
 }
 
 /** Primary UI component for user interaction */

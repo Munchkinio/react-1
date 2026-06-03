@@ -6,9 +6,9 @@ const mockMovie: MovieProps = {
   movieId: 1,
   movieTitle: 'Pulp Fiction',
   movieCover: 'poster.jpg',
-  movieReleaseDate: new Date('1994'),
+  movieReleaseDate: new Date(1994, 0, 1),
   movieRelevantGenre: ['Action & Adventure'],
-  movieRairing: 8.9,
+  movieRating: 8.9,
   movieDuration: 154,
   movieDescription: 'Pulp Fiction description',
 }

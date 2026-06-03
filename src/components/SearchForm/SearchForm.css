@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;700&display=swap');
-
 .search-form {
   position: relative;
   min-height: 650px;
   overflow: hidden;
   color: var(--palette-white);
-  font-family: 'Montserrat', sans-serif;
+  font-family: Montserrat, sans-serif;
   text-align: left;
   margin: 20px 0 0;
 }

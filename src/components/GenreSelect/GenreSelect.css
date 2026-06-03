@@ -3,7 +3,7 @@
   margin: 0 0 20px;
   padding: 0 60px;
   border-bottom: 1px solid var(--palette-gray-dark);
-  font-family: 'Montserrat', sans-serif;
+  font-family: Montserrat, sans-serif;
 }
 
 .genre-select__list {
