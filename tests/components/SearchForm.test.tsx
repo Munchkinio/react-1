@@ -5,7 +5,7 @@ import SearchForm from "../../src/components/SearchForm/SearchForm";
 describe("SearchForm", () => {
   test("renders initial input", () => {
     const onSearchMock = jest.fn();
-    render(<SearchForm searchQuery="Find your best movie" onSearch={onSearchMock} />);
+    render(<SearchForm searchQuery="Find your best movie" onSearch={onSearchMock} onAddMovie={jest.fn()} />);
     expect(screen.getByDisplayValue("Find your best movie")).toBeInTheDocument();
   });
 
@@ -13,7 +13,7 @@ describe("SearchForm", () => {
     const user = userEvent.setup();
     const onSearchMock = jest.fn();
 
-    render(<SearchForm searchQuery="Find your best movie" onSearch={onSearchMock} />);
+    render(<SearchForm searchQuery="Find your best movie" onSearch={onSearchMock} onAddMovie={jest.fn()} />);
     const input = screen.getByRole('textbox');
     await user.clear(input);
     await user.type(input, 'Project Hail Mary');
@@ -26,7 +26,7 @@ describe("SearchForm", () => {
     const user = userEvent.setup();
     const onSearchMock = jest.fn();
 
-    render(<SearchForm searchQuery="Find your best movie" onSearch={onSearchMock} />);
+    render(<SearchForm searchQuery="Find your best movie" onSearch={onSearchMock} onAddMovie={jest.fn()} />);
     const input = screen.getByRole('textbox');
     await user.clear(input);
     await user.type(input, 'Terminator 2');
@@ -38,7 +38,7 @@ describe("SearchForm", () => {
   test("user clears search input", async () => {
     const user = userEvent.setup();
 
-    render(<SearchForm searchQuery="Find your best movie" onSearch={jest.fn()} />);
+    render(<SearchForm searchQuery="Find your best movie" onSearch={jest.fn()} onAddMovie={jest.fn()} />);
     expect(screen.getByRole('button', { name: 'Clear search' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Clear search' }));
     expect(screen.getByRole('textbox')).toHaveValue('');

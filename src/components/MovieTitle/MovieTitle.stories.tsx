@@ -36,5 +36,7 @@ export const Default: Story = {
   args: {
     movie: mockMovie,
     onMovieClick: fn(),
+    onEdit: fn(),
+    onDelete: fn(),
   },
 }

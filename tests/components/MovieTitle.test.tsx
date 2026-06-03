@@ -18,7 +18,7 @@ describe('MovieTitle', () => {
   test('renders movie card', () => {
     const onMovieClick = jest.fn()
 
-    render(<MovieTitle movie={mockMovie} onMovieClick={onMovieClick} />)
+    render(<MovieTitle movie={mockMovie} onMovieClick={onMovieClick} onEdit={jest.fn()} onDelete={jest.fn()} />)
 
     expect(screen.getByRole('heading', { name: 'Bohemian Rhapsody' })).toBeInTheDocument()
     expect(screen.getByAltText('Bohemian Rhapsody')).toBeInTheDocument()
@@ -31,12 +31,12 @@ describe('MovieTitle', () => {
     const user = userEvent.setup()
     const onMovieClick = jest.fn()
 
-    render(<MovieTitle movie={mockMovie} onMovieClick={onMovieClick} />)
+    render(<MovieTitle movie={mockMovie} onMovieClick={onMovieClick} onEdit={jest.fn()} onDelete={jest.fn()} />)
 
     await user.click(screen.getByRole('button', { name: 'Open movie menu' }))
 
-    expect(screen.getByText('Edit')).toBeInTheDocument()
-    expect(screen.getByText('Delete')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Close movie menu' })).toBeInTheDocument()
     expect(onMovieClick).not.toHaveBeenCalled()
   })
@@ -45,7 +45,7 @@ describe('MovieTitle', () => {
     const user = userEvent.setup()
     const onMovieClick = jest.fn()
 
-    render(<MovieTitle movie={mockMovie} onMovieClick={onMovieClick} />)
+    render(<MovieTitle movie={mockMovie} onMovieClick={onMovieClick} onEdit={jest.fn()} onDelete={jest.fn()} />)
 
     await user.click(screen.getByRole('heading', { name: 'Bohemian Rhapsody' }))
 

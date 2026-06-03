@@ -70,14 +70,24 @@
 }
 
 .movie-tile__menu-list li {
+  padding: 0;
+}
+
+.movie-tile__menu-item {
+  display: block;
+  width: 100%;
   padding: 10px 16px;
+  border: none;
+  background: none;
   color: var(--palette-white);
+  font-family: inherit;
   font-size: 14px;
+  text-align: left;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
-.movie-tile__menu-list li:hover {
+.movie-tile__menu-item:hover {
   background: var(--palette-accent);
 }
 
