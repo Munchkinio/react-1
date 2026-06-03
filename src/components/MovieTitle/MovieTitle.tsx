@@ -1,18 +1,34 @@
-import { useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 import './MovieTitle.css'
 import type { MovieProps } from '../../types/movie'
 
-type MovieTitle = {
-  movie: MovieProps,
+type MovieTitleProps = {
+  movie: MovieProps
   onMovieClick: (movieId: number) => void
+  onEdit: (movie: MovieProps) => void
+  onDelete: (movieId: number) => void
 }
 
 function MovieTitle({
   movie,
   onMovieClick,
-}: MovieTitle) {
+  onEdit,
+  onDelete,
+}: MovieTitleProps) {
   const [isPopupOpen, togglePopup] = useState(false)
   const handleOpenMovie = () => onMovieClick(movie.movieId)
+
+  const handleEdit = (event: MouseEvent) => {
+    event.stopPropagation()
+    togglePopup(false)
+    onEdit(movie)
+  }
+
+  const handleDelete = (event: MouseEvent) => {
+    event.stopPropagation()
+    togglePopup(false)
+    onDelete(movie.movieId)
+  }
 
   return (
     <article
@@ -21,6 +37,7 @@ function MovieTitle({
       tabIndex={0}
       onClick={handleOpenMovie}
       onKeyDown={(e) => {
+        if (e.target !== e.currentTarget) return
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           handleOpenMovie()
@@ -53,8 +70,16 @@ function MovieTitle({
               ×
             </button>
             <ul className="movie-tile__menu-list">
-              <li>Edit</li>
-              <li>Delete</li>
+              <li>
+                <button type="button" className="movie-tile__menu-item" onClick={handleEdit}>
+                  Edit
+                </button>
+              </li>
+              <li>
+                <button type="button" className="movie-tile__menu-item" onClick={handleDelete}>
+                  Delete
+                </button>
+              </li>
             </ul>
           </div>
         )}

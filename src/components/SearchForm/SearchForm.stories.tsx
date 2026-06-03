@@ -13,7 +13,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    "searchQuery": "Find a movie for an evening...",
-    "onSearch": fn()
+    searchQuery: 'What do you want to watch?',
+    onSearch: fn(),
+    onAddMovie: fn(),
   },
 };

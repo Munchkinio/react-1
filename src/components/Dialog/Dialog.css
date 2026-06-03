@@ -1,0 +1,97 @@
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  background: color-mix(in srgb, var(--palette-gray-darker) 75%, transparent);
+  backdrop-filter: blur(4px);
+}
+
+.dialog {
+  width: 100%;
+  max-width: 920px;
+  max-height: calc(100vh - 80px);
+  max-height: calc(100dvh - 80px);
+  overflow: auto;
+  border-radius: 4px;
+  background: var(--palette-gray-darker);
+  font-family: Montserrat, sans-serif;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 36px 0;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  color: var(--palette-white);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.dialog-header button {
+  flex-shrink: 0;
+  padding: 3px;
+  border: none;
+  background: none;
+  color: var(--palette-white);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dialog-header button:focus-visible {
+  outline: 1px solid var(--palette-accent);
+  outline-offset: 2px;
+}
+
+.dialog-body {
+  padding: 28px 36px 36px;
+}
+
+.dialog--compact {
+  max-width: 560px;
+}
+
+.dialog--compact .dialog-body {
+  padding-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .dialog-overlay {
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .dialog {
+    max-width: none;
+    max-height: none;
+    min-height: 100dvh;
+    border-radius: 0;
+  }
+
+  .dialog-header {
+    padding: 20px 16px 0;
+    padding-top: max(20px, env(safe-area-inset-top));
+  }
+
+  .dialog-body {
+    padding: 24px 16px 32px;
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+  }
+
+  .dialog-header h2 {
+    font-size: 20px;
+  }
+}

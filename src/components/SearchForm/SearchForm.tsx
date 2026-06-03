@@ -4,6 +4,7 @@ import './SearchForm.css'
 type SearchProps = {
   searchQuery: string
   onSearch: (query: string) => void
+  onAddMovie: () => void
 }
 
 const POSTER_IMAGES = [
@@ -27,7 +28,7 @@ const POSTER_IMAGES = [
   'https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=300&h=450&fit=crop',
 ]
 
-function SearchForm({ searchQuery, onSearch }: SearchProps) {
+function SearchForm({ searchQuery, onSearch, onAddMovie }: SearchProps) {
   const [query, setQuery] = useState(searchQuery)
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -57,6 +58,13 @@ function SearchForm({ searchQuery, onSearch }: SearchProps) {
             <span className="search-form__logo-netflix">netflix</span>
             <span className="search-form__logo-roulette">roulette</span>
           </div>
+          <button
+            type="button"
+            className="search-form__add-movie"
+            onClick={onAddMovie}
+          >
+            + Add movie
+          </button>
         </header>
 
         <div className="search-form__content">
