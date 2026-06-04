@@ -33,9 +33,16 @@ describe("SearchForm", () => {
     expect(onSearchMock).toHaveBeenCalledWith('Terminator 2');
   });
 
-  test("renders search query from props", () => {
-    render(<SearchForm searchQuery="Zootopia" onSearch={jest.fn()} onAddMovie={jest.fn()} />);
-    expect(screen.getByDisplayValue("Zootopia")).toBeInTheDocument();
+  test("syncs input when searchQuery prop changes", () => {
+    const { rerender } = render(
+      <SearchForm searchQuery="Zootopia" onSearch={jest.fn()} onAddMovie={jest.fn()} />
+    );
+    expect(screen.getByRole("textbox")).toHaveValue("Zootopia");
+
+    rerender(
+      <SearchForm searchQuery="Interstellar" onSearch={jest.fn()} onAddMovie={jest.fn()} />
+    );
+    expect(screen.getByRole("textbox")).toHaveValue("Interstellar");
   });
 
   test("user clears search input", async () => {

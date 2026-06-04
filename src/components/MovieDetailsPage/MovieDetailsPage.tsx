@@ -9,26 +9,18 @@ export function MovieDetailsPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
+  const isInvalidMovieId =
+    !id ||
+    !Number.isFinite(movieId) ||
+    !Number.isInteger(movieId) ||
+    movieId <= 0;
+
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(() => !isInvalidMovieId);
   const [movie, setMovie] = useState(state?.movie);
 
-  const beginFetch = () => {
-    setLoading(true);
-    setError(null);
-  };
-
   useEffect(() => {
-    if (
-      !id ||
-      !Number.isFinite(movieId) ||
-      !Number.isInteger(movieId) ||
-      movieId <= 0
-    ) {
-      setError("Invalid movie id");
-      setLoading(false);
-      return;
-    }
+    if (isInvalidMovieId) return;
 
     if (movie?.movieId === movieId) {
       setLoading(false);
@@ -44,7 +36,8 @@ export function MovieDetailsPage() {
 
     let isCurrent = true;
 
-    beginFetch();
+    setLoading(true);
+    setError(null);
 
     getMovieById(movieId)
       .then((data) => {
@@ -63,8 +56,9 @@ export function MovieDetailsPage() {
     return () => {
       isCurrent = false;
     };
-  }, [movieId, state?.movie]);
+  }, [isInvalidMovieId, movieId, state?.movie, movie?.movieId]);
 
+  if (isInvalidMovieId) return <p>Error: Invalid movie id</p>;
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!movie) return <p>Movie not found</p>;
@@ -81,12 +75,10 @@ export function MovieDetailsPage() {
   };
 
   return (
-    <>
-      <MovieDetails
-        key={movieId}
-        movie={movie}
-        onSearchClick={handleBackToSearch}
-      />
-    </>
+    <MovieDetails
+      key={movieId}
+      movie={movie}
+      onSearchClick={handleBackToSearch}
+    />
   );
 }
