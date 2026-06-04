@@ -77,26 +77,29 @@ export function HomePage({ onAddMovie, onEditMovie }: HomePageProps) {
   const handleSearch = (query: string) => {
     beginFetch();
     setSearchParams((prev) => {
-      if (query) prev.set("search", query);
-      else prev.delete("search");
-      return prev;
+      const next = new URLSearchParams(prev);
+      if (query) next.set("search", query);
+      else next.delete("search");
+      return next;
     });
   };
 
   const handleGenre = (genre: string) => {
     beginFetch();
     setSearchParams((prev) => {
-      if (genre === "all") prev.delete("genre");
-      else prev.set("genre", genre);
-      return prev;
+      const next = new URLSearchParams(prev);
+      if (genre === "all") next.delete("genre");
+      else next.set("genre", genre);
+      return next;
     });
   };
 
   const handleSorting = (sorting: string) => {
     beginFetch();
     setSearchParams((prev) => {
-      prev.set("sortBy", sorting);
-      return prev;
+      const next = new URLSearchParams(prev);
+      next.set("sortBy", sorting);
+      return next;
     });
   };
 

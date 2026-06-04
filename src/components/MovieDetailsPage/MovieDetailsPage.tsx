@@ -19,7 +19,12 @@ export function MovieDetailsPage() {
   };
 
   useEffect(() => {
-    if (!id || Number.isNaN(movieId)) {
+    if (
+      !id ||
+      !Number.isFinite(movieId) ||
+      !Number.isInteger(movieId) ||
+      movieId <= 0
+    ) {
       setError("Invalid movie id");
       setLoading(false);
       return;
@@ -64,7 +69,8 @@ export function MovieDetailsPage() {
   if (error) return <p>Error: {error}</p>;
   if (!movie) return <p>Movie not found</p>;
 
-  const returnSearch = (state as { returnSearch?: string } | null)?.returnSearch;
+  const returnSearch = (state as { returnSearch?: string } | null)
+    ?.returnSearch;
 
   const handleBackToSearch = () => {
     if (returnSearch) {
