@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEvent } from 'react'
+import { useState, type MouseEvent } from 'react'
 import './MovieTitle.css'
 import type { MovieProps } from '../../types/movie'
 
@@ -16,11 +16,8 @@ function MovieTitle({
   onDelete,
 }: MovieTitleProps) {
   const [isPopupOpen, togglePopup] = useState(false)
-  const [hasPosterError, setHasPosterError] = useState(!movie.movieCover)
-
-  useEffect(() => {
-    setHasPosterError(!movie.movieCover)
-  }, [movie.movieCover])
+  const [imageLoadFailed, setImageLoadFailed] = useState(false)
+  const hasPosterError = !movie.movieCover || imageLoadFailed
 
   const handleOpenMovie = () => onMovieClick(movie)
 
@@ -98,7 +95,7 @@ function MovieTitle({
             className="movie-tile__poster"
             src={movie.movieCover}
             alt={movie.movieTitle}
-            onError={() => setHasPosterError(true)}
+            onError={() => setImageLoadFailed(true)}
           />
         )}
       </div>

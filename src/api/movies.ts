@@ -63,7 +63,9 @@ export async function getMovies(params: GetMoviesParams = {}): Promise<MovieProp
   }
 
   const response = await fetch(url)
-  if (!response.ok) throw new Error('Bad response')
+  if (!response.ok) {
+    throw new Error(`Failed to fetch movies: ${response.status} ${response.statusText}`)
+  }
 
   const json: MoviesResponse = await response.json()
   return json.data.map(mapMovieDtoToProps)

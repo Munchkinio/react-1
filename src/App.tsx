@@ -18,7 +18,6 @@ const MOVIE_SORT_OPTIONS = [
 ] as const
 
 function App() {
-  const handleSearch = (query: string) => setQuery(query)
   const genres = ['all', 'documentary', 'comedy', 'horror', 'crime']
   const [searchQuery, setQuery] = useState<string | undefined>(undefined)
   const [sortOption, setSorting] = useState('release_date')
@@ -30,11 +29,13 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    let isCurrent = true
-
+  const beginFetch = () => {
     setLoading(true)
     setError(null)
+  }
+
+  useEffect(() => {
+    let isCurrent = true
 
     getMovies({
       filter: selectedGenre === 'all' ? undefined : selectedGenre,
@@ -61,8 +62,14 @@ function App() {
     }
   }, [searchQuery, selectedGenre, sortOption])
 
+  const handleSearch = (query: string) => {
+    beginFetch()
+    setQuery(query)
+  }
+
   const handleGenre = (genre: string) => {
-    setSelectedGenre(genre);
+    beginFetch()
+    setSelectedGenre(genre)
   }
 
   const handleAddMovie = () => {
@@ -92,10 +99,14 @@ function App() {
   const handleMovieEdit = (_movie: MovieProps) => {
     console.log('Movie edited')
   }
-  const handleMovieDelete = (_movieId: number) => { console.log('Movie deleted') }
+
+  const handleMovieDelete = (_movieId: number) => {
+    console.log('Movie deleted')
+  }
 
   const handleSorting = (sorting: string) => {
-    setSorting(sorting);
+    beginFetch()
+    setSorting(sorting)
   }
 
   if (loading && movies.length === 0) return <p>Loading...</p>
@@ -104,7 +115,11 @@ function App() {
   return (
     <>
       {selectedMovie ? (
-        <MovieDetails movie={selectedMovie} onSearchClick={handleMovieDetailsClose} />
+        <MovieDetails
+          key={selectedMovie.movieId}
+          movie={selectedMovie}
+          onSearchClick={handleMovieDetailsClose}
+        />
       ) : (
         <>
           <SearchForm

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { MovieProps } from '../../types/movie'
 import './MovieDetails.css'
 
@@ -14,11 +14,8 @@ function formatDuration(minutes: number): string {
 }
 
 function MovieDetails({ movie, onSearchClick }: MovieDetailsProps) {
-  const [hasPosterError, setHasPosterError] = useState(!movie.movieCover)
-
-  useEffect(() => {
-    setHasPosterError(!movie.movieCover)
-  }, [movie.movieCover])
+  const [imageLoadFailed, setImageLoadFailed] = useState(false)
+  const hasPosterError = !movie.movieCover || imageLoadFailed
 
   return (
     <article className="movie-details" id={movie.movieId.toString()}>
@@ -55,7 +52,7 @@ function MovieDetails({ movie, onSearchClick }: MovieDetailsProps) {
               className="movie-details__poster"
               src={movie.movieCover}
               alt={movie.movieTitle}
-              onError={() => setHasPosterError(true)}
+              onError={() => setImageLoadFailed(true)}
             />
           )}
         </div>
