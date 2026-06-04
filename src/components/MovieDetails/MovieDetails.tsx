@@ -15,6 +15,13 @@ function formatDuration(minutes: number): string {
 
 function MovieDetails({ movie, onSearchClick }: MovieDetailsProps) {
   const [imageLoadFailed, setImageLoadFailed] = useState(false)
+  const [prevCover, setPrevCover] = useState(movie.movieCover)
+
+  if (movie.movieCover !== prevCover) {
+    setPrevCover(movie.movieCover)
+    setImageLoadFailed(false)
+  }
+
   const hasPosterError = !movie.movieCover || imageLoadFailed
 
   return (

@@ -68,5 +68,6 @@ export async function getMovies(params: GetMoviesParams = {}): Promise<MovieProp
   }
 
   const json: MoviesResponse = await response.json()
-  return json.data.map(mapMovieDtoToProps)
+  const items = Array.isArray(json.data) ? json.data : []
+  return items.map(mapMovieDtoToProps)
 }

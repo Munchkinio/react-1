@@ -97,10 +97,12 @@ function App() {
   }
 
   const handleMovieEdit = (_movie: MovieProps) => {
+    void _movie
     console.log('Movie edited')
   }
 
   const handleMovieDelete = (_movieId: number) => {
+    void _movieId
     console.log('Movie deleted')
   }
 

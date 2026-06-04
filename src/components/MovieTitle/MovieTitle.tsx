@@ -17,6 +17,13 @@ function MovieTitle({
 }: MovieTitleProps) {
   const [isPopupOpen, togglePopup] = useState(false)
   const [imageLoadFailed, setImageLoadFailed] = useState(false)
+  const [prevCover, setPrevCover] = useState(movie.movieCover)
+
+  if (movie.movieCover !== prevCover) {
+    setPrevCover(movie.movieCover)
+    setImageLoadFailed(false)
+  }
+
   const hasPosterError = !movie.movieCover || imageLoadFailed
 
   const handleOpenMovie = () => onMovieClick(movie)
