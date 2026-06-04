@@ -29,11 +29,6 @@ export function HomePage({ onAddMovie, onEditMovie }: HomePageProps) {
 
   const navigate = useNavigate();
 
-  const beginFetch = () => {
-    setLoading(true);
-    setError(null);
-  };
-
   useEffect(() => {
     let isCurrent = true;
 
@@ -75,7 +70,6 @@ export function HomePage({ onAddMovie, onEditMovie }: HomePageProps) {
   };
 
   const handleSearch = (query: string) => {
-    beginFetch();
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       if (query) next.set("search", query);
@@ -85,7 +79,6 @@ export function HomePage({ onAddMovie, onEditMovie }: HomePageProps) {
   };
 
   const handleGenre = (genre: string) => {
-    beginFetch();
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       if (genre === "all") next.delete("genre");
@@ -95,7 +88,6 @@ export function HomePage({ onAddMovie, onEditMovie }: HomePageProps) {
   };
 
   const handleSorting = (sorting: string) => {
-    beginFetch();
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       next.set("sortBy", sorting);
