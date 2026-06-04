@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './SearchForm.css'
 
 type SearchProps = {
+  searchQuery?: string
   onSearch: (query: string) => void
   onAddMovie: () => void
 }
@@ -27,8 +28,12 @@ const POSTER_IMAGES = [
   'https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=300&h=450&fit=crop',
 ]
 
-function SearchForm({ onSearch, onAddMovie }: SearchProps) {
-  const [query, setQuery] = useState('')
+function SearchForm({ searchQuery = '', onSearch, onAddMovie }: SearchProps) {
+  const [query, setQuery] = useState(searchQuery)
+
+  useEffect(() => {
+    setQuery(searchQuery)
+  }, [searchQuery])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,6 +42,7 @@ function SearchForm({ onSearch, onAddMovie }: SearchProps) {
 
   const handleClear = () => {
     setQuery('')
+    onSearch('')
   }
 
   return (

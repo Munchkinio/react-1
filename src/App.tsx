@@ -1,164 +1,65 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import SearchForm from './components/SearchForm/SearchForm'
-import Dialog from './components/Dialog/Dialog'
-import MovieForm from './components/MovieForm/MovieForm'
-import type { MovieProps } from './types/movie'
-import { createPortal } from 'react-dom';
-import MovieListPage from './components/MovieListPage/MovieListPage'
-import { getMovies } from './api/movies'
-import MovieDetails from './components/MovieDetails/MovieDetails'
-import MoviesToolbar from './components/MoviesToolbar/MoviesToolbar'
+import { useState } from "react";
+import "./App.css";
+import Dialog from "./components/Dialog/Dialog";
+import MovieForm from "./components/MovieForm/MovieForm";
+import type { MovieProps } from "./types/movie";
+import { createPortal } from "react-dom";
+import { Routes, Route } from "react-router-dom";
+import { MovieDetailsPage } from "./components/MovieDetailsPage/MovieDetailsPage";
+import { HomePage } from "./components/HomePage/HomePage";
 
-type DialogMode = 'add' | 'edit' | null
-
-const MOVIE_SORT_OPTIONS = [
-  { name: 'Release Date', id: 'release_date' },
-  { name: 'Title', id: 'title' },
-] as const
+type DialogMode = "add" | "edit" | null;
 
 function App() {
-  const genres = ['all', 'documentary', 'comedy', 'horror', 'crime']
-  const [searchQuery, setQuery] = useState<string | undefined>(undefined)
-  const [sortOption, setSorting] = useState('release_date')
-  const [selectedGenre, setSelectedGenre] = useState(genres[0])
-  const [selectedMovie, setSelectedMovie] = useState<MovieProps | undefined>(undefined);
   const [dialogMode, setDialogMode] = useState<DialogMode>(null);
   const [editingMovie, setEditingMovie] = useState<MovieProps | undefined>();
-  const [movies, setMovies] = useState<MovieProps[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
-  const beginFetch = () => {
-    setLoading(true)
-    setError(null)
-  }
-
-  useEffect(() => {
-    let isCurrent = true
-
-    getMovies({
-      filter: selectedGenre === 'all' ? undefined : selectedGenre,
-      search: searchQuery || '',
-      searchBy: searchQuery ? 'title' : undefined,
-      sortBy: sortOption,
-      sortOrder: 'desc',
-    })
-      .then((data) => {
-        if (!isCurrent) return
-        setMovies(data)
-      })
-      .catch((err) => {
-        if (!isCurrent) return
-        setError(err.message)
-      })
-      .finally(() => {
-        if (!isCurrent) return
-        setLoading(false)
-      })
-
-    return () => {
-      isCurrent = false
-    }
-  }, [searchQuery, selectedGenre, sortOption])
-
-  const handleSearch = (query: string) => {
-    beginFetch()
-    setQuery(query)
-  }
-
-  const handleGenre = (genre: string) => {
-    beginFetch()
-    setSelectedGenre(genre)
-  }
-
-  const handleAddMovie = () => {
-    setEditingMovie(undefined)
-    setDialogMode('add')
-  }
+  const openAddMovie = () => {
+    setEditingMovie(undefined);
+    setDialogMode("add");
+  };
+  const openEditMovie = (movie: MovieProps) => {
+    setEditingMovie(movie);
+    setDialogMode("edit");
+  };
 
   const handleCloseDialog = () => {
-    setDialogMode(null)
-    setEditingMovie(undefined)
-  }
+    setDialogMode(null);
+    setEditingMovie(undefined);
+  };
 
   const handleFormSubmit = (movieData: MovieProps) => {
-    console.log(dialogMode === 'add' ? 'Movie added: ' : 'Movie updated: ', movieData)
+    console.log(
+      dialogMode === "add" ? "Movie added: " : "Movie updated: ",
+      movieData,
+    );
     handleCloseDialog();
-  }
-
-  const handleMovieClick = (movie: MovieProps) => {
-    setSelectedMovie(movie);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  const handleMovieDetailsClose = () => {
-    setSelectedMovie(undefined);
-  }
-
-  const handleMovieEdit = (_movie: MovieProps) => {
-    void _movie
-    console.log('Movie edited')
-  }
-
-  const handleMovieDelete = (_movieId: number) => {
-    void _movieId
-    console.log('Movie deleted')
-  }
-
-  const handleSorting = (sorting: string) => {
-    beginFetch()
-    setSorting(sorting)
-  }
-
-  if (loading && movies.length === 0) return <p>Loading...</p>
-  if (error && movies.length === 0) return <p>Error: {error}</p>
+  };
 
   return (
     <>
-      {selectedMovie ? (
-        <MovieDetails
-          key={selectedMovie.movieId}
-          movie={selectedMovie}
-          onSearchClick={handleMovieDetailsClose}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage onAddMovie={openAddMovie} onEditMovie={openEditMovie} />
+          }
         />
-      ) : (
-        <>
-          <SearchForm
-            onSearch={handleSearch}
-            onAddMovie={handleAddMovie}
-          />
-          <MoviesToolbar
-            genres={genres}
-            selectedGenre={selectedGenre}
-            onGenreSelect={handleGenre}
-            sortOptions={[...MOVIE_SORT_OPTIONS]}
-            currentSort={sortOption}
-            onSortSelect={handleSorting}
-          />
-          <MovieListPage
-            movies={movies}
-            onMovieClick={handleMovieClick}
-            onEdit={handleMovieEdit}
-            onDelete={handleMovieDelete}
-          />
-        </>
-      )}
+        <Route path="/movies/:id" element={<MovieDetailsPage />} />
+      </Routes>
 
-      {dialogMode && createPortal(
-        <Dialog
-          title={dialogMode === 'add' ? 'Add movie' : 'Edit movie'}
-          onClose={handleCloseDialog}
-        >
-          <MovieForm movie={editingMovie} onFormSubmit={handleFormSubmit} />
-        </Dialog>,
-        document.body
-      )}
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      {dialogMode &&
+        createPortal(
+          <Dialog
+            title={dialogMode === "add" ? "Add movie" : "Edit movie"}
+            onClose={handleCloseDialog}
+          >
+            <MovieForm movie={editingMovie} onFormSubmit={handleFormSubmit} />
+          </Dialog>,
+          document.body,
+        )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
