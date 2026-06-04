@@ -31,6 +31,11 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    let isCurrent = true
+
+    setLoading(true)
+    setError(null)
+
     getMovies({
       filter: selectedGenre === 'all' ? undefined : selectedGenre,
       search: searchQuery || '',
@@ -38,9 +43,22 @@ function App() {
       sortBy: sortOption,
       sortOrder: 'desc',
     })
-      .then(setMovies)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false))
+      .then((data) => {
+        if (!isCurrent) return
+        setMovies(data)
+      })
+      .catch((err) => {
+        if (!isCurrent) return
+        setError(err.message)
+      })
+      .finally(() => {
+        if (!isCurrent) return
+        setLoading(false)
+      })
+
+    return () => {
+      isCurrent = false
+    }
   }, [searchQuery, selectedGenre, sortOption])
 
   const handleGenre = (genre: string) => {
