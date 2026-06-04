@@ -50,6 +50,6 @@ describe('MovieTitle', () => {
     await user.click(screen.getByRole('heading', { name: 'Bohemian Rhapsody' }))
 
     expect(onMovieClick).toHaveBeenCalledTimes(1)
-    expect(onMovieClick).toHaveBeenCalledWith(mockMovie.movieId)
+    expect(onMovieClick).toHaveBeenCalledWith(mockMovie)
   })
 })

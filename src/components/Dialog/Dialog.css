@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 24px 20px;
   box-sizing: border-box;
   background: color-mix(in srgb, var(--palette-gray-darker) 75%, transparent);
   backdrop-filter: blur(4px);
@@ -14,8 +14,8 @@
 .dialog {
   width: 100%;
   max-width: 920px;
-  max-height: calc(100vh - 80px);
-  max-height: calc(100dvh - 80px);
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
   overflow: auto;
   border-radius: 4px;
   background: var(--palette-gray-darker);
@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 28px 36px 0;
+  padding: 22px 36px 0;
 }
 
 .dialog-header h2 {
@@ -57,7 +57,7 @@
 }
 
 .dialog-body {
-  padding: 28px 36px 36px;
+  padding: 20px 36px 28px;
 }
 
 .dialog--compact {

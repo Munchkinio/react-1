@@ -137,7 +137,8 @@
 }
 
 .search-form__input::placeholder {
-  color: var(--palette-gray-medium);
+  color: color-mix(in srgb, var(--palette-white) 70%, transparent);
+  opacity: 1;
 }
 
 .search-form__clear {
