@@ -40,8 +40,7 @@ function formatGenreFilter(genre: string): string {
 }
 
 export async function getMovies(params: GetMoviesParams = {}): Promise<MovieProps[]> {
-  const url = new URL('http://localhost:4000/movies')
-
+  const url = new URL('http://localhost:4000/movies');
   if (params.filter) {
     url.searchParams.set('filter', formatGenreFilter(params.filter))
   }
@@ -70,4 +69,14 @@ export async function getMovies(params: GetMoviesParams = {}): Promise<MovieProp
   const json: MoviesResponse = await response.json()
   const items = Array.isArray(json.data) ? json.data : []
   return items.map(mapMovieDtoToProps)
+}
+
+export async function getMovieById(id: number): Promise<MovieProps> {
+  const url = new URL('http://localhost:4000/movies/' + id);
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch movie: ${response.status} ${response.statusText}`);
+  }
+  const json: MovieDto = await response.json();
+  return mapMovieDtoToProps(json);
 }

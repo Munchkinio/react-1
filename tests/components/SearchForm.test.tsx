@@ -33,15 +33,22 @@ describe("SearchForm", () => {
     expect(onSearchMock).toHaveBeenCalledWith('Terminator 2');
   });
 
+  test("renders search query from props", () => {
+    render(<SearchForm searchQuery="Zootopia" onSearch={jest.fn()} onAddMovie={jest.fn()} />);
+    expect(screen.getByDisplayValue("Zootopia")).toBeInTheDocument();
+  });
+
   test("user clears search input", async () => {
     const user = userEvent.setup();
+    const onSearchMock = jest.fn();
 
-    render(<SearchForm onSearch={jest.fn()} onAddMovie={jest.fn()} />);
+    render(<SearchForm onSearch={onSearchMock} onAddMovie={jest.fn()} />);
     const input = screen.getByRole('textbox');
     await user.type(input, 'Matrix');
     expect(screen.getByRole('button', { name: 'Clear search' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Clear search' }));
     expect(input).toHaveValue('');
+    expect(onSearchMock).toHaveBeenCalledWith('');
     expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
   });
 
