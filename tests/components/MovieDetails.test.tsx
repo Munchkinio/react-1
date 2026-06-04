@@ -27,4 +27,16 @@ describe('MovieDetails', () => {
     expect(screen.getByText('Pulp Fiction description')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Open search' })).toBeInTheDocument()
   })
+
+  test('renders placeholder when poster is missing', () => {
+    render(
+      <MovieDetails
+        movie={{ ...mockMovie, movieCover: '' }}
+        onSearchClick={jest.fn()}
+      />
+    )
+
+    expect(screen.getByText('No image')).toBeInTheDocument()
+    expect(screen.queryByAltText('Pulp Fiction')).not.toBeInTheDocument()
+  })
 })

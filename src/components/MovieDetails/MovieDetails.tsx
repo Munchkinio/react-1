@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import type { MovieProps } from '../../types/movie'
 import './MovieDetails.css'
 
@@ -13,6 +14,12 @@ function formatDuration(minutes: number): string {
 }
 
 function MovieDetails({ movie, onSearchClick }: MovieDetailsProps) {
+  const [hasPosterError, setHasPosterError] = useState(!movie.movieCover)
+
+  useEffect(() => {
+    setHasPosterError(!movie.movieCover)
+  }, [movie.movieCover])
+
   return (
     <article className="movie-details" id={movie.movieId.toString()}>
       <header className="movie-details__header">
@@ -39,11 +46,18 @@ function MovieDetails({ movie, onSearchClick }: MovieDetailsProps) {
 
       <div className="movie-details__content">
         <div className="movie-details__poster-wrap">
-          <img
-            className="movie-details__poster"
-            src={movie.movieCover}
-            alt={movie.movieTitle}
-          />
+          {hasPosterError ? (
+            <div className="movie-details__poster movie-details__poster--placeholder" aria-hidden="true">
+              No image
+            </div>
+          ) : (
+            <img
+              className="movie-details__poster"
+              src={movie.movieCover}
+              alt={movie.movieTitle}
+              onError={() => setHasPosterError(true)}
+            />
+          )}
         </div>
 
         <div className="movie-details__info">

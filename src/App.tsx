@@ -1,25 +1,50 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
-import Counter from './components/Counter/Counter'
 import SearchForm from './components/SearchForm/SearchForm'
-import GenreSelect from './components/GenreSelect/GenreSelect'
 import Dialog from './components/Dialog/Dialog'
 import MovieForm from './components/MovieForm/MovieForm'
 import type { MovieProps } from './types/movie'
 import { createPortal } from 'react-dom';
+import MovieListPage from './components/MovieListPage/MovieListPage'
+import { getMovies } from './api/movies'
+import MovieDetails from './components/MovieDetails/MovieDetails'
+import MoviesToolbar from './components/MoviesToolbar/MoviesToolbar'
 
 type DialogMode = 'add' | 'edit' | null
 
+const MOVIE_SORT_OPTIONS = [
+  { name: 'Release Date', id: 'release_date' },
+  { name: 'Title', id: 'title' },
+] as const
+
 function App() {
-  const handleSearch = (query: string) => console.log('User searched for: ', query)
+  const handleSearch = (query: string) => setQuery(query)
   const genres = ['all', 'documentary', 'comedy', 'horror', 'crime']
+  const [searchQuery, setQuery] = useState<string | undefined>(undefined)
+  const [sortOption, setSorting] = useState('release_date')
   const [selectedGenre, setSelectedGenre] = useState(genres[0])
-  const [dialogMode, setDialogMode] = useState<DialogMode>(null)
-  const [editingMovie, setEditingMovie] = useState<MovieProps | undefined>()
+  const [selectedMovie, setSelectedMovie] = useState<MovieProps | undefined>(undefined);
+  const [dialogMode, setDialogMode] = useState<DialogMode>(null);
+  const [editingMovie, setEditingMovie] = useState<MovieProps | undefined>();
+  const [movies, setMovies] = useState<MovieProps[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    getMovies({
+      filter: selectedGenre === 'all' ? undefined : selectedGenre,
+      search: searchQuery || '',
+      searchBy: searchQuery ? 'title' : undefined,
+      sortBy: sortOption,
+      sortOrder: 'desc',
+    })
+      .then(setMovies)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [searchQuery, selectedGenre, sortOption])
 
   const handleGenre = (genre: string) => {
-    setSelectedGenre(genre)
-    console.log('User selected: ', genre, ' genre')
+    setSelectedGenre(genre);
   }
 
   const handleAddMovie = () => {
@@ -34,19 +59,56 @@ function App() {
 
   const handleFormSubmit = (movieData: MovieProps) => {
     console.log(dialogMode === 'add' ? 'Movie added: ' : 'Movie updated: ', movieData)
-    handleCloseDialog()
+    handleCloseDialog();
   }
+
+  const handleMovieClick = (movie: MovieProps) => {
+    setSelectedMovie(movie);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  const handleMovieDetailsClose = () => {
+    setSelectedMovie(undefined);
+  }
+
+  const handleMovieEdit = (_movie: MovieProps) => {
+    console.log('Movie edited')
+  }
+  const handleMovieDelete = (_movieId: number) => { console.log('Movie deleted') }
+
+  const handleSorting = (sorting: string) => {
+    setSorting(sorting);
+  }
+
+  if (loading && movies.length === 0) return <p>Loading...</p>
+  if (error && movies.length === 0) return <p>Error: {error}</p>
 
   return (
     <>
-      <Counter count={0} />
-
-      <SearchForm
-        searchQuery="What do you want to watch?"
-        onSearch={handleSearch}
-        onAddMovie={handleAddMovie}
-      />
-      <GenreSelect genres={genres} selectedGenre={selectedGenre} onSelect={handleGenre} />
+      {selectedMovie ? (
+        <MovieDetails movie={selectedMovie} onSearchClick={handleMovieDetailsClose} />
+      ) : (
+        <>
+          <SearchForm
+            onSearch={handleSearch}
+            onAddMovie={handleAddMovie}
+          />
+          <MoviesToolbar
+            genres={genres}
+            selectedGenre={selectedGenre}
+            onGenreSelect={handleGenre}
+            sortOptions={[...MOVIE_SORT_OPTIONS]}
+            currentSort={sortOption}
+            onSortSelect={handleSorting}
+          />
+          <MovieListPage
+            movies={movies}
+            onMovieClick={handleMovieClick}
+            onEdit={handleMovieEdit}
+            onDelete={handleMovieDelete}
+          />
+        </>
+      )}
 
       {dialogMode && createPortal(
         <Dialog

@@ -36,10 +36,10 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     sortOptions: [
-      { name: 'Release Date', id: 'releaseDate' },
+      { name: 'Release Date', id: 'release_date' },
       { name: 'Title', id: 'title' },
     ],
-    currentSelection: 'releaseDate',
+    currentSelection: 'release_date',
     onSelection: fn(),
   },
 }

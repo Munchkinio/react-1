@@ -1,10 +1,10 @@
-import { useState, type MouseEvent } from 'react'
+import { useEffect, useState, type MouseEvent } from 'react'
 import './MovieTitle.css'
 import type { MovieProps } from '../../types/movie'
 
 type MovieTitleProps = {
   movie: MovieProps
-  onMovieClick: (movieId: number) => void
+  onMovieClick: (movie: MovieProps) => void
   onEdit: (movie: MovieProps) => void
   onDelete: (movieId: number) => void
 }
@@ -16,7 +16,13 @@ function MovieTitle({
   onDelete,
 }: MovieTitleProps) {
   const [isPopupOpen, togglePopup] = useState(false)
-  const handleOpenMovie = () => onMovieClick(movie.movieId)
+  const [hasPosterError, setHasPosterError] = useState(!movie.movieCover)
+
+  useEffect(() => {
+    setHasPosterError(!movie.movieCover)
+  }, [movie.movieCover])
+
+  const handleOpenMovie = () => onMovieClick(movie)
 
   const handleEdit = (event: MouseEvent) => {
     event.stopPropagation()
@@ -83,11 +89,18 @@ function MovieTitle({
             </ul>
           </div>
         )}
-        <img
-          className="movie-tile__poster"
-          src={movie.movieCover}
-          alt={movie.movieTitle}
-        />
+        {hasPosterError ? (
+          <div className="movie-tile__poster movie-tile__poster--placeholder" aria-hidden="true">
+            No image
+          </div>
+        ) : (
+          <img
+            className="movie-tile__poster"
+            src={movie.movieCover}
+            alt={movie.movieTitle}
+            onError={() => setHasPosterError(true)}
+          />
+        )}
       </div>
 
       <div className="movie-tile__info">
