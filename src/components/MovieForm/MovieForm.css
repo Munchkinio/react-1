@@ -26,6 +26,12 @@
   text-transform: uppercase;
 }
 
+.movie-form__error {
+  color: #e53935;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .movie-form__input,
 .movie-form__textarea {
   width: 100%;
