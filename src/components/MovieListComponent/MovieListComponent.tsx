@@ -1,17 +1,17 @@
-import SearchForm from "../SearchForm/SearchForm";
 import MovieListPage from "../MovieListPage/MovieListPage";
 import MoviesToolbar from "../MoviesToolbar/MoviesToolbar";
 import type { MovieProps } from "../../types/movie";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { getMovies } from "../../api/movies";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 
-type HomePageProps = {
-  onAddMovie: () => void;
-  onEditMovie: (movie: MovieProps) => void;
+export type MovieListOutletContext = {
+  searchQuery: string;
+  onSearch: (query: string) => void;
+  onMovieUpdated: (movie: MovieProps) => void;
 };
 
-export function HomePage({ onAddMovie, onEditMovie }: HomePageProps) {
+export function MovieListComponent() {
   const genres = ["all", "documentary", "comedy", "horror", "crime"];
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -57,11 +57,30 @@ export function HomePage({ onAddMovie, onEditMovie }: HomePageProps) {
     };
   }, [searchQuery, selectedGenre, sortOption]);
 
+  const handleMovieUpdated = useCallback((updated: MovieProps) => {
+    setMovies((prev) =>
+      prev.map((item) =>
+        item.movieId === updated.movieId ? updated : item,
+      ),
+    );
+  }, []);
+
   const handleMovieClick = (movie: MovieProps) => {
-    navigate(`/movies/${movie.movieId}`, {
+    navigate(`/${movie.movieId}`, {
       state: { movie, returnSearch: searchParams.toString() },
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleEditMovie = (movie: MovieProps) => {
+    const search = searchParams.toString();
+    navigate(
+      {
+        pathname: `/${movie.movieId}/edit`,
+        search: search ? `?${search}` : "",
+      },
+      { state: { movie } },
+    );
   };
 
   const handleMovieDelete = (_movieId: number) => {
@@ -95,16 +114,21 @@ export function HomePage({ onAddMovie, onEditMovie }: HomePageProps) {
     });
   };
 
+  const outletContext = useMemo<MovieListOutletContext>(
+    () => ({
+      searchQuery,
+      onSearch: handleSearch,
+      onMovieUpdated: handleMovieUpdated,
+    }),
+    [searchQuery, handleMovieUpdated],
+  );
+
   if (loading && movies.length === 0) return <p>Loading...</p>;
   if (error && movies.length === 0) return <p>Error: {error}</p>;
 
   return (
     <>
-      <SearchForm
-        searchQuery={searchQuery}
-        onSearch={handleSearch}
-        onAddMovie={onAddMovie}
-      />
+      <Outlet context={outletContext} />
       <MoviesToolbar
         genres={genres}
         selectedGenre={selectedGenre}
@@ -116,7 +140,7 @@ export function HomePage({ onAddMovie, onEditMovie }: HomePageProps) {
       <MovieListPage
         movies={movies}
         onMovieClick={handleMovieClick}
-        onEdit={onEditMovie}
+        onEdit={handleEditMovie}
         onDelete={handleMovieDelete}
       />
     </>

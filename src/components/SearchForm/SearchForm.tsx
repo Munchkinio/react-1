@@ -1,49 +1,65 @@
-import { useEffect, useState } from 'react'
-import './SearchForm.css'
+import { useEffect, useState } from "react";
+import {
+  Outlet,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import type { MovieListOutletContext } from "../MovieListComponent/MovieListComponent";
+import "./SearchForm.css";
 
 type SearchProps = {
-  searchQuery?: string
-  onSearch: (query: string) => void
-  onAddMovie: () => void
-}
+  searchQuery?: string;
+  onSearch: (query: string) => void;
+  outletContext?: MovieListOutletContext;
+};
 
 const POSTER_IMAGES = [
-  'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1594909129185-15505dc9cbfb?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1485846234665-8393b97e6c48?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1518676590939-597005090706?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1505682634904-d7c8d95dce50?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1594909129185-15505dc9cbfb?w=300&h=450&fit=crop',
-  'https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=300&h=450&fit=crop',
-]
+  "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1594909129185-15505dc9cbfb?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1485846234665-8393b97e6c48?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1518676590939-597005090706?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1505682634904-d7c8d95dce50?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1594909129185-15505dc9cbfb?w=300&h=450&fit=crop",
+  "https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=300&h=450&fit=crop",
+];
 
-function SearchForm({ searchQuery = '', onSearch, onAddMovie }: SearchProps) {
-  const [query, setQuery] = useState(searchQuery)
+function SearchForm({ searchQuery = "", onSearch, outletContext }: SearchProps) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchQuery);
 
   useEffect(() => {
-    setQuery(searchQuery)
-  }, [searchQuery])
+    setQuery(searchQuery);
+  }, [searchQuery]);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSearch(query)
-  }
+    e.preventDefault();
+    onSearch(query);
+  };
 
   const handleClear = () => {
-    setQuery('')
-    onSearch('')
-  }
+    setQuery("");
+    onSearch("");
+  };
+
+  const handleAddMovie = () => {
+    const search = searchParams.toString();
+    navigate({
+      pathname: "/new",
+      search: search ? `?${search}` : "",
+    });
+  };
 
   return (
     <section className="search-form">
@@ -66,7 +82,7 @@ function SearchForm({ searchQuery = '', onSearch, onAddMovie }: SearchProps) {
           <button
             type="button"
             className="search-form__add-movie"
-            onClick={onAddMovie}
+            onClick={handleAddMovie}
           >
             + Add movie
           </button>
@@ -99,10 +115,12 @@ function SearchForm({ searchQuery = '', onSearch, onAddMovie }: SearchProps) {
               SEARCH
             </button>
           </form>
+
+          <Outlet context={outletContext} />
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default SearchForm
+export default SearchForm;

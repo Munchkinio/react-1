@@ -4,7 +4,7 @@ import { getMovieById } from "../../api/movies";
 import { useEffect, useState } from "react";
 
 export function MovieDetailsPage() {
-  const { id } = useParams();
+  const { movieId: id } = useParams();
   const movieId = Number(id);
   const navigate = useNavigate();
   const { state } = useLocation();

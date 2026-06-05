@@ -1,11 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import SearchForm from "../../src/components/SearchForm/SearchForm";
+
+function renderSearchForm(ui: React.ReactElement) {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+}
 
 describe("SearchForm", () => {
   test("renders empty input with placeholder", () => {
     const onSearchMock = jest.fn();
-    render(<SearchForm onSearch={onSearchMock} onAddMovie={jest.fn()} />);
+    renderSearchForm(<SearchForm onSearch={onSearchMock} />);
     expect(screen.getByPlaceholderText("What do you want to watch?")).toHaveValue("");
   });
 
@@ -13,7 +18,7 @@ describe("SearchForm", () => {
     const user = userEvent.setup();
     const onSearchMock = jest.fn();
 
-    render(<SearchForm onSearch={onSearchMock} onAddMovie={jest.fn()} />);
+    renderSearchForm(<SearchForm onSearch={onSearchMock} />);
     const input = screen.getByRole('textbox');
     await user.type(input, 'Project Hail Mary');
     await user.click(screen.getByRole('button', { name: 'SEARCH' }));
@@ -25,7 +30,7 @@ describe("SearchForm", () => {
     const user = userEvent.setup();
     const onSearchMock = jest.fn();
 
-    render(<SearchForm onSearch={onSearchMock} onAddMovie={jest.fn()} />);
+    renderSearchForm(<SearchForm onSearch={onSearchMock} />);
     const input = screen.getByRole('textbox');
     await user.type(input, 'Terminator 2');
     await user.keyboard('{Enter}');
@@ -34,13 +39,15 @@ describe("SearchForm", () => {
   });
 
   test("syncs input when searchQuery prop changes", () => {
-    const { rerender } = render(
-      <SearchForm searchQuery="Zootopia" onSearch={jest.fn()} onAddMovie={jest.fn()} />
+    const { rerender } = renderSearchForm(
+      <SearchForm searchQuery="Zootopia" onSearch={jest.fn()} />
     );
     expect(screen.getByRole("textbox")).toHaveValue("Zootopia");
 
     rerender(
-      <SearchForm searchQuery="Interstellar" onSearch={jest.fn()} onAddMovie={jest.fn()} />
+      <MemoryRouter>
+        <SearchForm searchQuery="Interstellar" onSearch={jest.fn()} />
+      </MemoryRouter>
     );
     expect(screen.getByRole("textbox")).toHaveValue("Interstellar");
   });
@@ -49,7 +56,7 @@ describe("SearchForm", () => {
     const user = userEvent.setup();
     const onSearchMock = jest.fn();
 
-    render(<SearchForm onSearch={onSearchMock} onAddMovie={jest.fn()} />);
+    renderSearchForm(<SearchForm onSearch={onSearchMock} />);
     const input = screen.getByRole('textbox');
     await user.type(input, 'Matrix');
     expect(screen.getByRole('button', { name: 'Clear search' })).toBeInTheDocument();
@@ -61,12 +68,16 @@ describe("SearchForm", () => {
 
   test("user clicks add movie button", async () => {
     const user = userEvent.setup();
-    const onAddMovieMock = jest.fn();
 
     render(
-      <SearchForm onSearch={jest.fn()} onAddMovie={onAddMovieMock} />
+      <MemoryRouter initialEntries={["/"]}>
+        <Routes>
+          <Route path="/" element={<SearchForm onSearch={jest.fn()} />} />
+          <Route path="/new" element={<div>Add movie page</div>} />
+        </Routes>
+      </MemoryRouter>,
     );
-    await user.click(screen.getByRole('button', { name: '+ Add movie' }));
-    expect(onAddMovieMock).toHaveBeenCalledTimes(1);
+    await user.click(screen.getByRole("button", { name: "+ Add movie" }));
+    expect(screen.getByText("Add movie page")).toBeInTheDocument();
   });
 });
