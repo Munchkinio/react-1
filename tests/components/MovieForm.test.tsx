@@ -70,4 +70,30 @@ describe("MovieForm", () => {
     expect(screen.getByRole("button", { name: "Submitting..." })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Reset" })).toBeDisabled();
   });
+
+  test("rejects whitespace-only title", async () => {
+    const user = userEvent.setup();
+
+    render(<MovieForm movie={mockMovie} onFormSubmit={jest.fn()} />);
+
+    await user.clear(screen.getByLabelText("Title"));
+    await user.type(screen.getByLabelText("Title"), "   ");
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    expect(await screen.findByText("Title is required")).toBeInTheDocument();
+  });
+
+  test("rejects whitespace-only genres", async () => {
+    const user = userEvent.setup();
+
+    render(<MovieForm movie={mockMovie} onFormSubmit={jest.fn()} />);
+
+    await user.clear(screen.getByLabelText("Genre"));
+    await user.type(screen.getByLabelText("Genre"), "  ,  ");
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    expect(
+      await screen.findByText("At least one genre is required"),
+    ).toBeInTheDocument();
+  });
 });

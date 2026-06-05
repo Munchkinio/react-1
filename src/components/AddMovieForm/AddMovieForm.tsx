@@ -19,7 +19,7 @@ function AddMovieForm() {
         pathname,
         search: search ? `?${search}` : "",
       },
-      movie ? { state: { movie } } : undefined,
+      movie ? { state: { movie, returnSearch: search } } : undefined,
     );
   };
 

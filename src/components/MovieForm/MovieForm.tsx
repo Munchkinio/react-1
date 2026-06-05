@@ -91,10 +91,11 @@ function MovieForm({ movie, onFormSubmit, isSubmitting = false }: MovieFormProps
           placeholder="Moana"
           aria-invalid={errors.movieTitle ? true : undefined}
           {...register("movieTitle", {
-            required: "Title is required",
-            minLength: {
-              value: 2,
-              message: "Title must be at least 2 characters",
+            validate: (value) => {
+              const trimmed = value.trim();
+              if (trimmed.length === 0) return "Title is required";
+              if (trimmed.length < 2) return "Title must be at least 2 characters";
+              return true;
             },
           })}
         />
@@ -192,7 +193,14 @@ function MovieForm({ movie, onFormSubmit, isSubmitting = false }: MovieFormProps
           placeholder="Enter genres"
           aria-invalid={errors.movieRelevantGenre ? true : undefined}
           {...register("movieRelevantGenre", {
-            required: "At least one genre is required",
+            validate: (value) => {
+              const genres = value
+                .split(",")
+                .map((genre) => genre.trim())
+                .filter(Boolean);
+              if (genres.length === 0) return "At least one genre is required";
+              return true;
+            },
           })}
         />
         {errors.movieRelevantGenre && (
@@ -241,10 +249,13 @@ function MovieForm({ movie, onFormSubmit, isSubmitting = false }: MovieFormProps
           rows={5}
           aria-invalid={errors.movieDescription ? true : undefined}
           {...register("movieDescription", {
-            required: "Overview is required",
-            minLength: {
-              value: 10,
-              message: "Overview must be at least 10 characters",
+            validate: (value) => {
+              const trimmed = value.trim();
+              if (trimmed.length === 0) return "Overview is required";
+              if (trimmed.length < 10) {
+                return "Overview must be at least 10 characters";
+              }
+              return true;
             },
           })}
         />
