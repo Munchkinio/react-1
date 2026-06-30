@@ -1,4 +1,5 @@
 import MovieTitle from '../MovieTitle/MovieTitle'
+import MovieListEmptyState from '../MovieListEmptyState/MovieListEmptyState'
 import type { MovieProps } from '../../types/movie'
 import './MovieListPage.css'
 
@@ -7,9 +8,32 @@ type MovieListPageProps = {
   onMovieClick: (movie: MovieProps) => void
   onEdit: (movie: MovieProps) => void
   onDelete: (movieId: number) => void
+  searchQuery?: string
+  selectedGenre?: string
+  onClearSearch?: () => void
 }
 
-function MovieListPage({ movies, onMovieClick, onEdit, onDelete }: MovieListPageProps) {
+function MovieListPage({
+  movies,
+  onMovieClick,
+  onEdit,
+  onDelete,
+  searchQuery = '',
+  selectedGenre = 'all',
+  onClearSearch = () => {},
+}: MovieListPageProps) {
+  if (movies.length === 0) {
+    return (
+      <section className="movie-list">
+        <MovieListEmptyState
+          searchQuery={searchQuery}
+          selectedGenre={selectedGenre}
+          onClearSearch={onClearSearch}
+        />
+      </section>
+    )
+  }
+
   const countLabel = movies.length === 1 ? 'movie found' : 'movies found'
 
   return (
