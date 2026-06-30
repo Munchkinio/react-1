@@ -1,0 +1,43 @@
+.movie-list-empty {
+  padding: 80px 60px;
+  background: var(--palette-gray-darker);
+  font-family: Montserrat, sans-serif;
+  text-align: center;
+}
+
+.movie-list-empty__message {
+  margin: 0 0 24px;
+  color: var(--palette-white);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+.movie-list-empty__action {
+  padding: 10px 24px;
+  border: 1px solid var(--palette-accent);
+  background: none;
+  color: var(--palette-accent);
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.movie-list-empty__action:hover {
+  background: var(--palette-accent);
+  color: var(--palette-white);
+}
+
+.movie-list-empty__action:focus-visible {
+  outline: 1px solid var(--palette-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .movie-list-empty {
+    padding: 60px 20px;
+  }
+}
