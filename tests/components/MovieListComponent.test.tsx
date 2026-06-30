@@ -87,9 +87,27 @@ describe("MovieListComponent", () => {
     await screen.findByText("Transformers 7");
     expect(getMovies).toHaveBeenCalledTimes(1);
 
-    await user.click(screen.getByRole("link", { name: "Go edit" }));
+    await user.click( screen.getByRole("link", { name: "Go edit" }));
 
     expect(await screen.findByText("Edit route")).toBeInTheDocument();
     expect(getMovies).toHaveBeenCalledTimes(1);
+  });
+
+  test("shows empty state when API returns no movies", async () => {
+    (getMovies as jest.Mock).mockResolvedValue([]);
+
+    renderMovieList();
+
+    expect(await screen.findByText("No movies found.")).toBeInTheDocument();
+    expect(screen.queryByText(/\d+ movies.*found/i)).not.toBeInTheDocument();
+  });
+
+  test("shows search-specific empty state when search param is set", async () => {
+    (getMovies as jest.Mock).mockResolvedValue([]);
+
+    renderMovieList("/?search=batman");
+
+    expect(await screen.findByText(/No movies found for.*batman/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /clear search/i })).toBeInTheDocument();
   });
 });

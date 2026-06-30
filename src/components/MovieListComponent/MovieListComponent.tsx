@@ -57,7 +57,7 @@ export function MovieListComponent() {
     };
   }, [searchQuery, selectedGenre, sortOption]);
 
-  const handleMovieUpdated = useCallback((updated: MovieProps) => {
+  const handleMovieUpdated = useCallback( (updated: MovieProps) => {
     setMovies((prev) =>
       prev.map((item) =>
         item.movieId === updated.movieId ? updated : item,
@@ -142,6 +142,9 @@ export function MovieListComponent() {
         onMovieClick={handleMovieClick}
         onEdit={handleEditMovie}
         onDelete={handleMovieDelete}
+        searchQuery={searchQuery}
+        selectedGenre={selectedGenre}
+        onClearSearch={() => handleSearch("")}
       />
     </>
   );
